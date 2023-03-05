@@ -6,13 +6,15 @@
 
   <div class="box">
 
-
-    <% newListItems.forEach(function(item){ %>
-      <div class="item">
-        <input type="checkbox">
-        <p><%=  item.name %></p>
-      </div>
-    <% })%>
+    
+      <% newListItems.forEach(function(item){ %>
+        <form>
+          <div class="item">
+            <input type="checkbox">
+            <p><%=  item.name %></p>
+          </div>
+        </form>
+      <% })%>
 
       <form class="item" action="/" method="post">
         <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
