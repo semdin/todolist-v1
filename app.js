@@ -39,7 +39,15 @@ const item3 = new Item(
   }
 );
 
-const items = [item1, item2, item3];
+const defaultItems = [item1, item2, item3];
+
+const listSchema = {
+  name: String,
+  items: [itemsSchema]
+};
+
+const List = new mongoose.model("List", listSchema);
+
 
 //From V1
 /*const items = ["Buy Food", "Cook Food", "Eat Food"];
@@ -52,7 +60,7 @@ app.get("/", function(req, res) {
   Item.find({}).then(function(foundItems){
 
     if(foundItems.length == 0){
-      Item.insertMany(items).then(function(){
+      Item.insertMany(defaultItems).then(function(){
         console.log("Data inserted.");
       }).catch(function(error){
         console.log(error);
@@ -82,15 +90,39 @@ app.post("/", function(req, res){
 });
 
 app.post("/delete", function(req, res){
-  console.log(req.body);
-});
-
-app.get("/work", function(req,res){
-  res.render("list", {listTitle: "Work List", newListItems: workItems});
+  //console.log(req.body.checkbox);
+  Item.findByIdAndRemove(req.body.checkbox).then(function(){
+    res.redirect("/");
+    console.log("Item deleted.");
+  }).catch(function(err){
+    console.log(err);
+  })
 });
 
 app.get("/about", function(req, res){
   res.render("about");
+});
+
+app.get("/:customListName", function(req,res){
+  //console.log(req.params.customListName);
+  const customListName = req.params.customListName
+
+  List.findOne({name: customListName}).then(function(foundList){
+    if(!foundList){
+      const list = new List({
+        name: customListName,
+        items: defaultItems
+      });
+      list.save();
+      res.redirect("/"+ customListName);
+    }else{
+      res.render("list", {listTitle: foundList.name, newListItems: foundList.items});
+    }
+  }).catch(function(err){
+    console.log(err);
+  });
+
+  
 });
 
 app.listen(3000, function() {
