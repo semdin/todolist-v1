@@ -10,7 +10,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://0.0.0.0:0/lazy-plum-cod-tuxCyclicDB", {useNewUrlParser: true});
+mongoose.connect("mongodb+srv://mehmetsemdinaktay:<password>@cluster0.huw09px.mongodb.net/?retryWrites=true&w=majority/todolistDB", {useNewUrlParser: true});
 
 const day = date.getDate();
 
