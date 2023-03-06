@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-//const date = require(__dirname + "/date.js"); from v1
+const date = require(__dirname + "/date.js");
 const mongoose = require("mongoose");
 const app = express();
 const _ = require("lodash");
@@ -12,6 +12,7 @@ app.use(express.static("public"));
 
 mongoose.connect("mongodb://0.0.0.0:27017/todolistDB", {useNewUrlParser: true});
 
+const day = date.getDate();
 
 /*const itemsSchema = new mongoose.Schema({
   name: String,
@@ -56,8 +57,6 @@ const workItems = [];*/
 
 app.get("/", function(req, res) {
 
-//const day = date.getDate();
-
   Item.find({}).then(function(foundItems){
 
     if(foundItems.length == 0){
@@ -68,7 +67,7 @@ app.get("/", function(req, res) {
       });
       res.redirect("/");
     }else{
-      res.render("list", {listTitle: "Today", newListItems: foundItems});
+      res.render("list", {listTitle: "Today", newListItems: foundItems, day : day});
     }
     
   }).catch(function(err){
@@ -140,7 +139,7 @@ app.get("/:customListName", function(req,res){
       list.save();
       res.redirect("/"+ customListName);
     }else{
-      res.render("list", {listTitle: foundList.name, newListItems: foundList.items});
+      res.render("list", {listTitle: foundList.name, newListItems: foundList.items, day : day});
     }
   }).catch(function(err){
     console.log(err);
