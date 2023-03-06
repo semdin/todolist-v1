@@ -10,7 +10,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb+srv://mehmetsemdinaktay:8e5GaYlmmOW8XD3y@cluster0.huw09px.mongodb.net/?retryWrites=true&w=majority/todolistDB", {useNewUrlParser: true});
+mongoose.connect("mongodb+srv://mehmetsemdinaktay:8e5GaYlmmOW8XD3y@cluster0.huw09px.mongodb.net/?retryWrites=true&w=majority/test", {useNewUrlParser: true});
 
 const day = date.getDate();
 
