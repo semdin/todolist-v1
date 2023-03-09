@@ -129,21 +129,25 @@ app.get("/about", function(req, res){
 app.get("/:customListName", function(req,res){
   //console.log(req.params.customListName);
   const customListName = _.capitalize(req.params.customListName);
+  
+  if(customListName !== "favicon.ico"){
+        List.findOne({name: customListName}).then(function(foundList){
+      if(!foundList){
+        const list = new List({
+          name: customListName,
+          items: defaultItems
+        });
+        list.save();
+        res.redirect("/"+ customListName);
+      }else{
+        res.render("list", {listTitle: foundList.name, newListItems: foundList.items, day : day});
+      }
+    }).catch(function(err){
+      console.log(err);
+    });
+  }
 
-  List.findOne({name: customListName}).then(function(foundList){
-    if(!foundList){
-      const list = new List({
-        name: customListName,
-        items: defaultItems
-      });
-      list.save();
-      res.redirect("/"+ customListName);
-    }else{
-      res.render("list", {listTitle: foundList.name, newListItems: foundList.items, day : day});
-    }
-  }).catch(function(err){
-    console.log(err);
-  });
+
 
   
 });
